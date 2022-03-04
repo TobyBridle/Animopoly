@@ -23,7 +23,7 @@ public class Board {
         Arrays.fill(positions, " ");
 
         for(int player = 0; player < this.players.size(); ++player) {
-            header += "Player " + (player+1) + ":\t" + Utils.pieceToChar(this.players.get(player).piece) + "\n";
+            header += this.players.get(player).name + ":\t" + Utils.pieceToChar(this.players.get(player).piece) + "\n";
             for(int pos = 0; pos < positions.length; ++pos) positions[pos] += (this.players.size()-1 < player ? " " : this.players.get(player).position[pos]);
         }
 
