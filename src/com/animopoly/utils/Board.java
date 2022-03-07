@@ -1,9 +1,7 @@
 package com.animopoly.utils;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.Arrays;;
 
 public class Board {
 
@@ -16,21 +14,20 @@ public class Board {
         this.dice = new Dice();
     }
 
-    public void printBoard()
+    public void printBoard(int activeTurn)
     {
         String[] positions = new String[26];
         String header = "";
         Arrays.fill(positions, " ");
 
         for(int player = 0; player < this.players.size(); ++player) {
-            header += this.players.get(player).name + ":\t" + Utils.pieceToChar(this.players.get(player).piece) + "\n";
+            header += (activeTurn == player ? "\033[32m" : "\033[m") + this.players.get(player).name + ":\t" + Utils.pieceToChar(this.players.get(player).piece) + "\n";
             for(int pos = 0; pos < positions.length; ++pos) positions[pos] += (this.players.size()-1 < player ? " " : this.players.get(player).position[pos]);
         }
 
         System.out.println("\033c"); // Clears Terminal Screen (DOES NOT WORK IN IDEA RUN DIALOG!) Will use dedicated terminal when showing project to ensure it works
-
         System.out.println(header);
-        System.out.println("\n");
+        System.out.println("\033[m");
         System.out.println("_________________________________________________________");
         System.out.println("|" + positions[0] + "   |" + positions[1] + "  |" + positions[2] + "  |" + positions[3] + "  |" + positions[4] + "  |" + positions[5] + "  |" + positions[6] + "  |" + positions[7] + "  |");
         System.out.println("|Start |  1   |   2  |  3   |  4   |  5   |  6   |  7   |");

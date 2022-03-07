@@ -13,7 +13,9 @@ public class Player
 
 	public String[] position;
 	public int location;
-	
+
+	public boolean missTurn;
+
 	public Player(String name, long initialCash, Utils.Piece piece)
 	{
 		this.name = name;
@@ -25,6 +27,8 @@ public class Player
 
 		this.position[0] = Utils.pieceToChar(this.piece);
 		this.location = 0;
+
+		this.missTurn = false;
 	}
 	
 	void changeMoney(long amount)
@@ -33,9 +37,9 @@ public class Player
 	}
 
 	void setPosition(int offset) {
-		this.position[this.location] = " ";
+		this.position[this.location % 26] = " ";
 		this.location += offset;
-		this.position[this.location] = Utils.pieceToChar(this.piece);
+		this.position[this.location % 26] = Utils.pieceToChar(this.piece);
 	}
 
 	public String toString()

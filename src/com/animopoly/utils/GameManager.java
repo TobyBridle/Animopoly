@@ -1,13 +1,17 @@
 package com.animopoly.utils;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class GameManager {
+
     Board board;
+    int activeTurn;
 
     public GameManager(Board board)
     {
         this.board = board;
+        this.activeTurn = 0;
     }
 
     public void waitForEnter() {
@@ -28,24 +32,42 @@ public class GameManager {
 
         while(shouldPlay)
         {
-            this.board.printBoard();
+            this.board.printBoard(0);
             int totalScore = 0;
 
             for(int player = 1; player <= this.board.players.size(); ++player) {
-                System.out.println("\n\n");
-                System.out.println("Player " + player + " press enter to roll the dice");
+                Player currPlayer = this.board.players.get(player - 1);
+
+                if(currPlayer.missTurn == true)
+                {
+                    currPlayer.missTurn = false;
+                    continue;
+                }
+
+                System.out.println(currPlayer.name + " press enter to roll the dice");
 
                 this.waitForEnter(); // Used since Scanner was having some weird issues
 
                 totalScore = this.board.dice.rollDice();
-                this.board.players.get(player - 1).setPosition(totalScore);
+                currPlayer.setPosition(totalScore);
 
 
                 System.out.println("You rolled a " + totalScore + "! Press enter to move your piece.");
+
                 this.waitForEnter();
 
-                this.board.printBoard();
+//                if(this.animals.collides(currPlayer))
+//                {
+//                    // Ask if they want to purchase property etc
+//                }
 
+                if(this.board.dice.isDoubles())
+                {
+                    System.out.println("You got a double roll! Take a card? (Y/N)");
+                    Scanner choice = new Scanner(System.in);
+                }
+
+                this.board.printBoard(player);
             }
 
             for(Player player : this.board.players)

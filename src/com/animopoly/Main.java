@@ -8,14 +8,19 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("\033cHow many Players will be playing? (MAX 4)");
-        Scanner playerScanner = new Scanner(System.in);
+    public static void main(String[] args) throws InterruptedException {
         int playerCount = -1;
-        if(!playerScanner.hasNextInt() || (playerCount = playerScanner.nextInt()) <= 0 || playerCount > 4)
+        while(true)
         {
-            System.out.println("Invalid Input for Player Count!");
-            System.exit(0);
+            System.out.println("\033cHow many Players will be playing? (MAX 4)");
+            Scanner playerScanner = new Scanner(System.in);
+            if(!playerScanner.hasNextInt() || (playerCount = playerScanner.nextInt()) <= 0 || playerCount > 4)
+            {
+                System.out.println("Invalid Input for Player Count!");
+                Thread.sleep(1000);
+            } else {
+                break;
+            }
         }
 
         // Loop playerCount Times
@@ -34,46 +39,46 @@ public class Main {
 
         String playerName = "";
         Utils.Piece playerPiece = Utils.Piece.DOG;
-        for(int p = 0; p < playerCount; ++p)
-        {
-            System.out.println("\033cPlayer " + (p+1) + ":");
-            System.out.println("What is your name?");
+        for(int p = 0; p < playerCount; ++p) {
+            while (true) {
+                System.out.println("\033cPlayer " + (p + 1) + ":");
+                System.out.println("What is your name?");
 
-            Scanner nameScanner = new Scanner(System.in);
-            if(!nameScanner.hasNextLine())
-            {
-                System.out.println("Invalid Input for Player Name!");
-                System.exit(0);
+                Scanner nameScanner = new Scanner(System.in);
+                if (!nameScanner.hasNextLine()) {
+                    System.out.println("Invalid Input for Player Name!");
+                }
+                playerName = nameScanner.nextLine();
+
+                System.out.println("What Animal would you like to be? (Options: " + (piecesList = pieces.toString().toLowerCase(Locale.ROOT)).subSequence(1, piecesList.length() - 1) + ")");
+                Scanner animalScanner = new Scanner(System.in);
+
+                switch (animalScanner.nextLine().toLowerCase(Locale.ROOT)) {
+                    case "dog":
+                        playerPiece = Utils.Piece.DOG;
+                        pieces.remove(Utils.Piece.DOG);
+                        break;
+                    case "cat":
+                        playerPiece = Utils.Piece.CAT;
+                        pieces.remove(Utils.Piece.CAT);
+                        break;
+                    case "mouse":
+                        playerPiece = Utils.Piece.MOUSE;
+                        pieces.remove(Utils.Piece.MOUSE);
+                        break;
+                    case "cock":
+                        playerPiece = Utils.Piece.COCK;
+                        pieces.remove(Utils.Piece.COCK);
+                        break;
+                    default:
+                        System.out.println("Invalid Input for Animal Type!");
+                        Thread.sleep(1000);
+                        continue;
+                }
+
+                players.add(new Player(playerName, 100, playerPiece));
+                break;
             }
-            playerName = nameScanner.nextLine();
-
-            System.out.println("What Animal would you like to be? (Options: " + (piecesList = pieces.toString().toLowerCase(Locale.ROOT)).subSequence(1, piecesList.length() -1 ) + ")");
-            Scanner animalScanner = new Scanner(System.in);
-
-            switch (animalScanner.nextLine().toLowerCase(Locale.ROOT))
-            {
-                case "dog":
-                    playerPiece = Utils.Piece.DOG;
-                    pieces.remove(Utils.Piece.DOG);
-                    break;
-                case "cat":
-                    playerPiece = Utils.Piece.CAT;
-                    pieces.remove(Utils.Piece.CAT);
-                    break;
-                case "mouse":
-                    playerPiece = Utils.Piece.MOUSE;
-                    pieces.remove(Utils.Piece.MOUSE);
-                    break;
-                case "cock":
-                    playerPiece = Utils.Piece.COCK;
-                    pieces.remove(Utils.Piece.COCK);
-                    break;
-                default:
-                    System.out.println("Invalid Input for Animal Type!");
-                    System.exit(0);
-            }
-
-            players.add(new Player(playerName, 100, playerPiece));
         }
         Board board = new Board(players);
 

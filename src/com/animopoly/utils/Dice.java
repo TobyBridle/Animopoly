@@ -39,5 +39,10 @@ public class Dice
         }
         return this.rolls[0] + this.rolls[1];
     }
+
+    public boolean isDoubles()
+    {
+        return this.doubles == true ? true : false;
+    }
     
 }
